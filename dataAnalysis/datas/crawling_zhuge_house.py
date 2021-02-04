@@ -28,19 +28,24 @@ today_hosuse_low = html.xpath('.//div[@class="room-today-low"]/text()')
 
 #均价
 average_price = html.xpath('(.//div[@class="average-price"]/p)[1]/text()')
+#环比
+price_up_or_low = html.xpath('(.//div[@class="average-price-up"]/span)[1]/text()')
+if len(price_up_or_low) > 0:
+    relative = html.xpath('(.//div[@class="average-price-up"]/span)[2]/text()')
+else:
+    price_up_or_low = html.xpath('(.//div[@class="average-price-low"]/span)[1]/text()')
+    relative = html.xpath('(.//div[@class="average-price-low"]/span)[2]/text()')
 
 #7天信息成交套数
 seven_day_nums = html.xpath('/html/body/div[5]/div[7]/div[2]/div[2]/div[1]/div[2]/div[1]/text()')
 transfer_lastday = html.xpath('(.//div[@class="transfer-lastweek"]/span)[2]/text()')
 
 content = '''
-{}，成都二手房均价为{}元/平方米，环比上月{}，
+成都每日楼市数据播报：{}，成都二手房均价为{}元/平方米，环比上月{}，
 {}，与昨日相比{}，
 成都二手房{}，相比昨日{}。
-'''.format(update_time, average_price[0], '', 
+'''.format(update_time, average_price[0], price_up_or_low[0] + relative[0], 
         today_new_hosuse_num[0], room_price_up_or_down[0] + room_price_percent[0],
         seven_day_nums[0],transfer_lastday[0])
 
 print(content)
-
-
